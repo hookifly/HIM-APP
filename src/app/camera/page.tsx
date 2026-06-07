@@ -1,0 +1,314 @@
+"use client";
+
+import Webcam from "react-webcam";
+
+import Image from "next/image";
+
+import { useEffect, useRef, useState } from "react";
+
+import {
+  ArrowLeft,
+  Camera,
+  Check,
+  RotateCcw,
+} from "lucide-react";
+
+import { useRouter } from "next/navigation";
+
+import { useScanStore } from "@/stores/scanstore";
+
+const steps = [
+  {
+    key: "front",
+    title: "Front Face",
+    instruction:
+      "Look straight into the camera",
+  },
+
+  {
+    key: "left",
+    title: "Left Angle",
+    instruction:
+      "Turn slightly to your left",
+  },
+
+  {
+    key: "right",
+    title: "Right Angle",
+    instruction:
+      "Turn slightly to your right",
+  },
+];
+
+export default function CameraPage() {
+  const router = useRouter();
+
+  const {
+  setImages,
+  setFiles,
+} = useScanStore();
+
+  const webcamRef =
+    useRef<Webcam>(null);
+
+  const [step, setStep] =
+    useState(0);
+
+  const [cameraReady, setCameraReady] =
+    useState(false);
+
+  const [cameraError, setCameraError] =
+    useState("");
+
+  const [capturedImages, setCapturedImages] =
+    useState<string[]>([]);
+
+  const currentStep = steps[step];
+
+  // ENABLE CAMERA
+  useEffect(() => {
+    async function enableCamera() {
+      try {
+        await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: "user",
+          },
+          audio: false,
+        });
+
+        setCameraReady(true);
+      } catch (error) {
+        console.log(error);
+
+        setCameraError(
+          "Camera permission denied or unavailable. Please allow camera access in browser settings."
+        );
+      }
+    }
+
+    enableCamera();
+  }, []);
+
+  function dataURLtoFile(
+  dataurl: string,
+  filename: string
+) {
+  const arr = dataurl.split(",");
+
+  const mime =
+    arr[0].match(/:(.*?);/)?.[1] ||
+    "image/jpeg";
+
+  const bstr = atob(arr[1]);
+
+  let n = bstr.length;
+
+  const u8arr =
+    new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] =
+      bstr.charCodeAt(n);
+  }
+
+  return new File(
+    [u8arr],
+    filename,
+    { type: mime }
+  );
+}
+
+  // CAPTURE IMAGE
+  function captureImage() {
+    const imageSrc =
+      webcamRef.current?.getScreenshot();
+
+    if (!imageSrc) return;
+
+    const updatedImages = [
+      ...capturedImages,
+      imageSrc,
+    ];
+
+    setCapturedImages(updatedImages);
+
+    // NEXT STEP
+    if (step < steps.length - 1) {
+      setStep(step + 1);
+    } else {
+      // SAVE IMAGES
+      const files =
+  updatedImages.map(
+    (image, index) =>
+      dataURLtoFile(
+        image,
+        `scan-${index}.jpg`
+      )
+  );
+
+setImages(updatedImages);
+
+setFiles(files);
+
+router.push("/processing");
+    }
+  }
+
+  // RETAKE
+  function retakeCurrent() {
+    if (step === 0) return;
+
+    const updated =
+      capturedImages.slice(0, -1);
+
+    setCapturedImages(updated);
+
+    setStep(step - 1);
+  }
+
+  return (
+    <main className="min-h-screen bg-black px-4 py-6 text-white">
+      <div className="mx-auto max-w-sm">
+
+        {/* HEADER */}
+        <div className="mb-8 flex items-center">
+          <button
+            onClick={() =>
+              router.back()
+            }
+            className="mr-4"
+          >
+            <ArrowLeft size={34} />
+          </button>
+
+          <h1 className="flex-1 text-center text-4xl font-bold">
+            Scan Face
+          </h1>
+        </div>
+
+        {/* PROGRESS */}
+        <div className="mb-8 flex justify-center gap-3">
+          {steps.map((_, index) => (
+            <div
+              key={index}
+              className={`h-3 w-20 rounded-full ${
+                index <= step
+                  ? "bg-red-600"
+                  : "bg-zinc-800"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* TITLE */}
+        <h2 className="text-center text-4xl font-bold">
+          {currentStep.title}
+        </h2>
+
+        <p className="mt-3 text-center text-lg text-white/60">
+          {currentStep.instruction}
+        </p>
+
+        {/* CAMERA */}
+        <div className="mt-10 overflow-hidden rounded-[40px] border border-white/10 bg-zinc-950">
+
+          {cameraError ? (
+            <div className="flex h-[520px] items-center justify-center p-8 text-center text-xl text-red-400">
+              {cameraError}
+            </div>
+          ) : cameraReady ? (
+            <Webcam
+              ref={webcamRef}
+              audio={false}
+              mirrored
+              screenshotFormat="image/jpeg"
+              videoConstraints={{
+                facingMode: "user",
+              }}
+              className="h-[520px] w-full object-cover"
+              onUserMedia={() =>
+                setCameraReady(true)
+              }
+              onUserMediaError={(error) => {
+                console.log(error);
+
+                setCameraError(
+                  "Unable to access camera."
+                );
+              }}
+            />
+          ) : (
+            <div className="flex h-[520px] items-center justify-center text-xl text-white/50">
+              Opening Camera...
+            </div>
+          )}
+        </div>
+
+        {/* PREVIEWS */}
+        <div className="mt-6 flex justify-center gap-4">
+          {steps.map((item, index) => {
+            const image =
+              capturedImages[index];
+
+            return (
+              <div
+                key={item.key}
+                className={`relative h-20 w-20 overflow-hidden rounded-full border-2 ${
+                  image
+                    ? "border-green-500"
+                    : "border-zinc-700"
+                }`}
+              >
+                {image ? (
+                  <>
+                    <Image
+                      src={image}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                    />
+
+                    <div className="absolute bottom-0 right-0 flex h-6 w-6 items-center justify-center rounded-full bg-green-500">
+                      <Check size={14} />
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex h-full items-center justify-center bg-zinc-900 text-sm text-white/40">
+                    {index + 1}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* CAPTURE */}
+        <button
+          onClick={captureImage}
+          disabled={!cameraReady}
+          className={`mt-10 flex w-full items-center justify-center gap-3 rounded-full py-5 text-3xl font-bold ${
+            cameraReady
+              ? "bg-red-600"
+              : "bg-zinc-800 text-zinc-500"
+          }`}
+        >
+          <Camera size={30} />
+
+          Capture
+        </button>
+
+        {/* RETAKE */}
+        {step > 0 && (
+          <button
+            onClick={retakeCurrent}
+            className="mt-6 flex w-full items-center justify-center gap-3 text-2xl text-white/50"
+          >
+            <RotateCcw size={24} />
+
+            Retake Previous
+          </button>
+        )}
+      </div>
+    </main>
+  );
+}
