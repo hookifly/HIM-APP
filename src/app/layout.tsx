@@ -3,6 +3,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { AuthProvider } from "@/context/auth-context";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Become HIM",
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <Script src="https://checkout.razorpay.com/v1/checkout.js" />
   <AuthProvider>
     {children}
   </AuthProvider>

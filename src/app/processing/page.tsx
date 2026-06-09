@@ -156,6 +156,8 @@ export default function ProcessingPage() {
       hasPurchased: false,
 
       updatedAt: Date.now(),
+      
+      scansCount :1,
     },
     {
       merge: true,
@@ -183,7 +185,7 @@ export default function ProcessingPage() {
           );
         }
 
-        router.replace("/results");
+        router.replace("/dashboard");
       } catch (error: any) {
         console.error(
           "Analysis Error:",

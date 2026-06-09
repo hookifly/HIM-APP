@@ -20,7 +20,15 @@ export default function DashboardPage() {
     useScanStore();
 
   const [activeTab, setActiveTab] =
-    useState("scan");
+  useState<"scan" | "insights">(
+    analysis ? "insights" : "scan"
+  );
+
+useEffect(() => {
+  if (analysis) {
+    setActiveTab("insights");
+  }
+}, [analysis]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -96,57 +104,41 @@ export default function DashboardPage() {
               <div className="absolute bottom-8 left-0 right-0 px-5 text-center">
 
                 {analysis ? (
-                  <>
-                    <h2 className="text-4xl italic leading-tight text-white">
-                      Face Already
-                      Analyzed
-                    </h2>
+  <>
+    <h2 className="text-4xl italic leading-tight text-white">
+      Face Already Analyzed
+    </h2>
 
-                    <p className="mt-4 text-lg text-white/60">
-                      Follow your
-                      personalized
-                      improvement plan
-                      and track your
-                      progress.
-                    </p>
+    <p className="mt-4 text-lg text-white/60">
+      Your masculinity report has been generated.
+      Continue following your improvement plan.
+    </p>
 
-                    <button
-                      onClick={() =>
-                        router.push(
-                          "/results"
-                        )
-                      }
-                      className="mt-8 w-full rounded-xl bg-[#A60800] py-5 text-xl font-black uppercase tracking-widest"
-                    >
-                      View Insights
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="text-4xl italic leading-tight text-white">
-                      Get Ratings and
-                      Recommendations
-                      To Become Him
-                    </h2>
+    <button
+      onClick={() =>
+        setActiveTab("insights")
+      }
+      className="mt-8 w-full rounded-xl bg-[#A60800] py-5 text-xl font-black uppercase tracking-widest"
+    >
+      View Insights
+    </button>
+  </>
+) : (
+  <>
+    <h2 className="text-4xl italic leading-tight text-white">
+      Get Ratings and Recommendations To Become Him
+    </h2>
 
-                    <button
-                      onClick={() => {
-  if (analysis) {
-    setActiveTab("insights");
-  } else {
-    router.push("/instructions");
-  }
-}}
-                      className="mt-8 w-full rounded-xl bg-[#A60800] py-5 text-xl font-black uppercase tracking-widest"
-                    >
-                      {
-  analysis
-    ? "View Report"
-    : "Begin Scan"
-}
-                    </button>
-                  </>
-                )}
+    <button
+      onClick={() =>
+        router.push("/instructions")
+      }
+      className="mt-8 w-full rounded-xl bg-[#A60800] py-5 text-xl font-black uppercase tracking-widest"
+    >
+      Begin Scan
+    </button>
+  </>
+)}
 
               </div>
 
@@ -158,41 +150,41 @@ export default function DashboardPage() {
 
             <div className="flex flex-1 items-center justify-center">
 
-              {analysis ? (
-                <div className="text-center">
+  {analysis ? (
+    <div className="w-full text-center">
 
-                  <h2 className="text-3xl font-bold">
-                    Your Analysis
-                  </h2>
+      <h2 className="text-3xl font-bold">
+        Face Analyzed
+      </h2>
 
-                  <p className="mt-4 text-white/50">
-                    Current Score:
-                    {" "}
-                    {
-                      analysis.currentScore
-                    }
-                  </p>
+      <div className="mt-8 rounded-3xl bg-zinc-950 p-6">
 
-                  <p className="mt-2 text-white/50">
-                    Archetype:
-                    {" "}
-                    {
-                      analysis.archetype
-                    }
-                  </p>
+        <p className="text-white/50">
+          Current Score
+        </p>
 
-                </div>
-              ) : (
-                <p className="max-w-xs text-center text-2xl leading-relaxed text-white/30">
-                  {
-  analysis
-    ? "Your face has already been analyzed."
-    : "Insights will appear here after scanning your face"
-}
-                </p>
-              )}
+        <h3 className="mt-2 text-5xl font-bold">
+          {analysis.currentScore}
+        </h3>
 
-            </div>
+        <p className="mt-6 text-white/50">
+          Archetype
+        </p>
+
+        <h3 className="mt-2 text-3xl font-bold text-red-500">
+          {analysis.archetype}
+        </h3>
+
+      </div>
+
+    </div>
+  ) : (
+    <p className="max-w-xs text-center text-2xl leading-relaxed text-white/30">
+      Insights will appear here after scanning your face
+    </p>
+  )}
+
+</div>
 
             <button
               onClick={() => {
@@ -205,9 +197,9 @@ export default function DashboardPage() {
               className="w-full rounded-xl bg-[#A60800] py-5 text-xl font-black uppercase tracking-widest"
             >
               {
-  analysis
-    ? "Open Report"
-    : "Become Him"
+analysis
+? "Open Full Report"
+: "Become Him"
 }
             </button>
 

@@ -10,15 +10,12 @@ import { useScanStore } from "@/stores/scanstore";
 
 import { useAuth } from "@/context/auth-context";
 
-import { db } from "@/lib/firebase";
-
-import {
-  doc,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { useState } from "react";
 
 export default function PaywallPage() {
+  const [loading, setLoading] =
+  useState(false);
+
   const router = useRouter();
 
 const { user } = useAuth();
@@ -47,28 +44,119 @@ const {
   }
 
   async function handleUnlock() {
+  try {
+    setLoading(true);
 
-  // Temporary fake payment
-  setPurchased(true);
+    const response =
+      await fetch(
+        "/api/create-order",
+        {
+          method: "POST",
+        }
+      );
 
-  if (user) {
+    const data =
+      await response.json();
 
-    await updateDoc(
-      doc(
-        db,
-        "users",
-        user.uid
-      ),
+    if (!data.success) {
+      alert(
+        "Failed to create payment."
+      );
+
+      setLoading(false);
+
+      return;
+    }
+
+    const options = {
+      key:
+        process.env
+          .NEXT_PUBLIC_RAZORPAY_KEY_ID,
+
+      amount:
+        data.order.amount,
+
+      currency:
+        data.order.currency,
+
+      name: "Become Him",
+
+      description:
+        "Full Facial Analysis",
+
+      order_id:
+        data.order.id,
+       
+      handler: async (
+  response: any
+) => {
+
+  const verifyResponse =
+    await fetch(
+      "/api/verify-payment",
       {
-        purchased: true,
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+
+        body: JSON.stringify({
+          razorpay_order_id:
+            response.razorpay_order_id,
+
+          razorpay_payment_id:
+            response.razorpay_payment_id,
+
+          razorpay_signature:
+            response.razorpay_signature,
+
+          uid: user?.uid,
+        }),
       }
     );
 
+  const verifyData =
+    await verifyResponse.json();
+
+  if (!verifyData.success) {
+    alert(
+      "Payment verification failed."
+    );
+
+    return;
   }
+
+  setPurchased(true);
 
   router.push(
     "/recommendations"
   );
+},
+
+      theme: {
+        color: "#dc2626",
+      },
+    };
+
+    const razorpay =
+      new (
+        window as any
+      ).Razorpay(options);
+
+    razorpay.open();
+
+    setLoading(false);
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      "Payment failed."
+    );
+
+    setLoading(false);
+  }
 }
 
   return (
@@ -198,9 +286,14 @@ const {
         {/* CTA */}
         <button
           onClick={handleUnlock}
+          disabled={loading}
           className="mt-10 w-full rounded-full bg-red-600 py-5 text-3xl font-bold transition-all hover:bg-red-500"
         >
-          Get Full Analysis Report
+          {
+  loading
+    ? "Loading..."
+    : "Unlock Full Analysis"
+}
         </button>
 
         {/* BACK */}
