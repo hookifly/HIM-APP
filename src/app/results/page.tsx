@@ -24,6 +24,7 @@ export default function ResultsPage() {
 
   const {
   images,
+  imageUrls,
   analysis,
   hasPurchased,
 } = useScanStore();
@@ -83,7 +84,7 @@ export default function ResultsPage() {
     <div className="absolute inset-4 overflow-hidden rounded-full border border-white/10">
 
       <Image
-        src={images[0] || "/main.jpg"}
+        src={imageUrls[0] || images[0] || "/main.jpg"}
         alt="Face"
         fill
         className="object-cover"

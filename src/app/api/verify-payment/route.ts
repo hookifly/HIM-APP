@@ -2,12 +2,7 @@ import { NextResponse } from "next/server";
 
 import crypto from "crypto";
 
-import {
-  doc,
-  updateDoc,
-} from "firebase/firestore";
-
-import { db } from "@/lib/firebase";
+import { db } from "@/lib/firebase-admin";
 
 export async function POST(
   request: Request
@@ -49,25 +44,26 @@ export async function POST(
       );
     }
 
-    await updateDoc(
-      doc(
-        db,
-        "users",
-        uid
-      ),
-      {
-        hasPurchased: true,
+    await db
+      .collection("users")
+      .doc(uid)
+      .set(
+        {
+          hasPurchased: true,
 
-        paymentId:
-          razorpay_payment_id,
+          paymentId:
+            razorpay_payment_id,
 
-        orderId:
-          razorpay_order_id,
+          orderId:
+            razorpay_order_id,
 
-        purchasedAt:
-          Date.now(),
-      }
-    );
+          purchasedAt:
+            Date.now(),
+        },
+        {
+          merge: true,
+        }
+      );
 
     return NextResponse.json({
       success: true,

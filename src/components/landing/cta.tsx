@@ -74,6 +74,21 @@ export function CTA() {
               </div>
             ))}
           </div>
+
+          <div className="mt-10 text-center text-sm text-white/40">
+
+  <a
+    href="/privacy"
+    className="mr-6"
+  >
+    Privacy Policy
+  </a>
+
+  <a href="/terms">
+    Terms & Conditions
+  </a>
+
+</div>
         </div>
       </div>
     </section>

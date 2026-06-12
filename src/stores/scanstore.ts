@@ -37,10 +37,23 @@ type Analysis = {
   jawline: AnalysisSection;
 
   summary: string;
+
+  priorities: {
+    title: string;
+    description: string;
+  }[];
+
+  recommendations: {
+    tag: string;
+    title: string;
+    description: string;
+  }[];
 };
 
 type ScanStore = {
   images: string[];
+
+  imageUrls: string[];
 
   files: File[];
 
@@ -50,6 +63,10 @@ type ScanStore = {
 
   setImages: (
     images: string[]
+  ) => void;
+
+  setImageUrls: (
+    imageUrls: string[]
   ) => void;
 
   setFiles: (
@@ -71,6 +88,8 @@ export const useScanStore =
   create<ScanStore>((set) => ({
     images: [],
 
+    imageUrls: [],
+
     files: [],
 
     analysis: null,
@@ -78,22 +97,41 @@ export const useScanStore =
     hasPurchased: false,
 
     setImages: (images) =>
-      set({ images }),
+      set({
+        images,
+      }),
+
+    setImageUrls: (
+      imageUrls
+    ) =>
+      set({
+        imageUrls,
+      }),
 
     setFiles: (files) =>
-      set({ files }),
-
-    setAnalysis: (analysis) =>
-      set({ analysis }),
-
-    setPurchased: (purchased) =>
       set({
-        hasPurchased: purchased,
+        files,
+      }),
+
+    setAnalysis: (
+      analysis
+    ) =>
+      set({
+        analysis,
+      }),
+
+    setPurchased: (
+      purchased
+    ) =>
+      set({
+        hasPurchased:
+          purchased,
       }),
 
     clearScan: () =>
       set({
         images: [],
+        imageUrls: [],
         files: [],
         analysis: null,
         hasPurchased: false,

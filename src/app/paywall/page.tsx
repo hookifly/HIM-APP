@@ -22,6 +22,7 @@ const { user } = useAuth();
 
 const {
   images,
+  imageUrls,
   analysis,
   setPurchased,
 } = useScanStore();
@@ -87,10 +88,7 @@ const {
       order_id:
         data.order.id,
        
-      handler: async (
-  response: any
-) => {
-
+    handler: async (response: any) => {
   const verifyResponse =
     await fetch(
       "/api/verify-payment",
@@ -103,15 +101,7 @@ const {
         },
 
         body: JSON.stringify({
-          razorpay_order_id:
-            response.razorpay_order_id,
-
-          razorpay_payment_id:
-            response.razorpay_payment_id,
-
-          razorpay_signature:
-            response.razorpay_signature,
-
+          ...response,
           uid: user?.uid,
         }),
       }
@@ -186,8 +176,7 @@ const {
 
             <Image
               src={
-                images[0] ||
-                "/main.jpg"
+                imageUrls[0] || images[0] || "/main.jpg"
               }
               alt="Face"
               fill

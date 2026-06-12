@@ -16,7 +16,7 @@ export default function DashboardPage() {
   const { user, loading } =
     useAuth();
 
-  const { analysis } =
+  const { analysis, imageUrls } =
     useScanStore();
 
   const [activeTab, setActiveTab] =

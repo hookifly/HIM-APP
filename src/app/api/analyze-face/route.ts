@@ -248,7 +248,22 @@ Return ONLY raw JSON.
     "insight":""
   },
 
-  "summary":""
+  "summary":"",
+
+"priorities":[
+{
+"title":"",
+"description":""
+}
+],
+
+"recommendations":[
+{
+"tag":"",
+"title":"",
+"description":""
+}
+]
 }
 `,
 ...imageParts,

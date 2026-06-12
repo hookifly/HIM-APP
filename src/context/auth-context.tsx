@@ -88,6 +88,15 @@ export function AuthProvider({
                     );
                 }
 
+                if (data.imageUrls) 
+                  {
+                    useScanStore
+                    .getState()
+                    .setImageUrls(
+                    data.imageUrls
+                 );
+              }
+
                 useScanStore
                   .getState()
                   .setPurchased(

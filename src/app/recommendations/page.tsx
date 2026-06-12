@@ -14,8 +14,6 @@ import { PriorityCard } from "@/app/recommendations/prioritycard";
 
 import { RecommendationCard } from "@/app/recommendations/recommendationcard";
 
-import { generateRecommendations } from "@/lib/recommendation-engine";
-
 import {
   ArrowLeft,
   Sparkles,
@@ -26,6 +24,7 @@ export default function RecommendationsPage() {
 
   const {
     images,
+    imageUrls,
     analysis,
     hasPurchased,
   } = useScanStore();
@@ -41,12 +40,11 @@ if (!hasPurchased) {
   return null;
 }
 
-  const {
-    priorities,
-    recommendations,
-  } = generateRecommendations(
-    analysis
-  );
+const priorities =
+  analysis.priorities;
+
+const recommendations =
+  analysis.recommendations;
 
   useEffect(() => {
   if (!analysis) {
@@ -103,8 +101,7 @@ if (
 
             <Image
               src={
-                images[0] ||
-                "/main.jpg"
+                imageUrls[0] || images[0] || "/main.jpg"
               }
               alt="Face"
               fill
@@ -144,7 +141,7 @@ if (
 
           <div className="mt-6 space-y-5">
 
-            {priorities.map(
+            {analysis.priorities.map(
               (item, index) => (
                 <PriorityCard
                   key={item.title}
@@ -164,7 +161,7 @@ if (
         {/* RECOMMENDATIONS */}
         <div className="mt-10 space-y-5">
 
-          {recommendations.map(
+          {analysis.recommendations.map(
             (item) => (
               <RecommendationCard
                 key={item.title}

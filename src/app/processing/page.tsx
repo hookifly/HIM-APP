@@ -96,6 +96,37 @@ export default function ProcessingPage() {
           }
         );
 
+        const uploadFormData =
+  new FormData();
+
+files.forEach((file) => {
+  uploadFormData.append(
+    "images",
+    file
+  );
+});
+
+const uploadResponse =
+  await fetch(
+    "/api/upload-images",
+    {
+      method: "POST",
+      body: uploadFormData,
+    }
+  );
+
+const uploadData =
+  await uploadResponse.json();
+
+if (!uploadData.success) {
+  throw new Error(
+    "Image upload failed"
+  );
+}
+
+const imageUrls =
+  uploadData.imageUrls;
+
         const response =
           await fetch(
             "/api/analyze-face",
@@ -145,45 +176,21 @@ export default function ProcessingPage() {
 
         if (user) {
   await setDoc(
-    doc(
-      db,
-      "users",
-      user.uid
-    ),
+    doc(db, "users", user.uid),
     {
       analysis: data.analysis,
 
-      hasPurchased: false,
+      imageUrls,
+
+      hasScanned: true,
 
       updatedAt: Date.now(),
-      
-      scansCount :1,
     },
     {
       merge: true,
     }
   );
 }
-
-        if (user) {
-          await setDoc(
-            doc(
-              db,
-              "users",
-              user.uid
-            ),
-            {
-              analysis:
-                data.analysis,
-
-              updatedAt:
-                Date.now(),
-            },
-            {
-              merge: true,
-            }
-          );
-        }
 
         router.replace("/dashboard");
       } catch (error: any) {
