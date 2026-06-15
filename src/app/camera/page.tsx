@@ -63,6 +63,9 @@ export default function CameraPage() {
   const [capturedImages, setCapturedImages] =
     useState<string[]>([]);
 
+  const [previewImage, setPreviewImage] =
+  useState<string | null>(null);
+
   const currentStep = steps[step];
 
   // ENABLE CAMERA
@@ -120,51 +123,61 @@ export default function CameraPage() {
 
   // CAPTURE IMAGE
   function captureImage() {
-    const imageSrc =
-      webcamRef.current?.getScreenshot();
+  const imageSrc =
+    webcamRef.current?.getScreenshot();
 
-    if (!imageSrc) return;
+  if (!imageSrc) return;
 
-    const updatedImages = [
-      ...capturedImages,
-      imageSrc,
-    ];
+  setPreviewImage(imageSrc);
+}
 
-    setCapturedImages(updatedImages);
+function useCurrentPhoto() {
+  if (!previewImage) return;
 
-    // NEXT STEP
-    if (step < steps.length - 1) {
-      setStep(step + 1);
-    } else {
-      // SAVE IMAGES
-      const files =
-  updatedImages.map(
-    (image, index) =>
-      dataURLtoFile(
-        image,
-        `scan-${index}.jpg`
-      )
-  );
+  const updatedImages = [
+    ...capturedImages,
+    previewImage,
+  ];
 
-setImages(updatedImages);
+  setCapturedImages(updatedImages);
 
-setFiles(files);
+  setPreviewImage(null);
 
-router.push("/processing");
-    }
+  if (step < 2) {
+    setStep(step + 1);
   }
+}
+
+function startAnalysis() {
+  const files =
+    capturedImages.map(
+      (image, index) =>
+        dataURLtoFile(
+          image,
+          `scan-${index}.jpg`
+        )
+    );
+
+  setImages(capturedImages);
+
+  setFiles(files);
+
+  router.push("/processing");
+}
 
   // RETAKE
   function retakeCurrent() {
-    if (step === 0) return;
+  if (capturedImages.length === 0) return;
 
-    const updated =
-      capturedImages.slice(0, -1);
+  const updatedImages =
+    capturedImages.slice(0, -1);
 
-    setCapturedImages(updated);
+  setCapturedImages(updatedImages);
 
-    setStep(step - 1);
-  }
+  setStep(updatedImages.length);
+
+  setPreviewImage(null);
+}
 
   return (
     <main className="min-h-screen bg-black px-4 py-6 text-white">
@@ -213,35 +226,34 @@ router.push("/processing");
         <div className="mt-10 overflow-hidden rounded-[40px] border border-white/10 bg-zinc-950">
 
           {cameraError ? (
-            <div className="flex h-[520px] items-center justify-center p-8 text-center text-xl text-red-400">
-              {cameraError}
-            </div>
-          ) : cameraReady ? (
-            <Webcam
-              ref={webcamRef}
-              audio={false}
-              mirrored
-              screenshotFormat="image/jpeg"
-              videoConstraints={{
-                facingMode: "user",
-              }}
-              className="h-[520px] w-full object-cover"
-              onUserMedia={() =>
-                setCameraReady(true)
-              }
-              onUserMediaError={(error) => {
-                console.log(error);
-
-                setCameraError(
-                  "Unable to access camera."
-                );
-              }}
-            />
-          ) : (
-            <div className="flex h-[520px] items-center justify-center text-xl text-white/50">
-              Opening Camera...
-            </div>
-          )}
+  <div className="flex h-[520px] items-center justify-center p-8 text-center text-xl text-red-400">
+    {cameraError}
+  </div>
+) : previewImage ? (
+  <div className="relative h-[520px] w-full">
+    <Image
+      src={previewImage}
+      alt="Preview"
+      fill
+      className="object-cover"
+    />
+  </div>
+) : cameraReady ? (
+  <Webcam
+    ref={webcamRef}
+    audio={false}
+    mirrored
+    screenshotFormat="image/jpeg"
+    videoConstraints={{
+      facingMode: "user",
+    }}
+    className="h-[520px] w-full object-cover"
+  />
+) : (
+  <div className="flex h-[520px] items-center justify-center text-xl text-white/50">
+    Opening Camera...
+  </div>
+)}
         </div>
 
         {/* PREVIEWS */}
@@ -283,19 +295,50 @@ router.push("/processing");
         </div>
 
         {/* CAPTURE */}
-        <button
-          onClick={captureImage}
-          disabled={!cameraReady}
-          className={`mt-10 flex w-full items-center justify-center gap-3 rounded-full py-5 text-3xl font-bold ${
-            cameraReady
-              ? "bg-red-600"
-              : "bg-zinc-800 text-zinc-500"
-          }`}
-        >
-          <Camera size={30} />
+        {previewImage ? (
+  <div className="mt-10 flex gap-4">
 
-          Capture
-        </button>
+    <button
+      onClick={() => setPreviewImage(null)}
+      className="flex-1 rounded-full bg-zinc-800 py-5 text-2xl font-bold"
+    >
+      Retake
+    </button>
+
+    <button
+      onClick={useCurrentPhoto}
+      className="flex-1 rounded-full bg-red-600 py-5 text-2xl font-bold"
+    >
+      Use Photo
+    </button>
+
+  </div>
+) : capturedImages.length < 3 ? (
+
+  <button
+    onClick={captureImage}
+    disabled={!cameraReady}
+    className={`mt-10 flex w-full items-center justify-center gap-3 rounded-full py-5 text-3xl font-bold ${
+      cameraReady
+        ? "bg-red-600"
+        : "bg-zinc-800 text-zinc-500"
+    }`}
+  >
+    <Camera size={30} />
+    Capture
+  </button>
+
+) : null}
+
+{capturedImages.length === 3 &&
+  !previewImage && (
+    <button
+      onClick={startAnalysis}
+      className="mt-10 w-full rounded-full bg-red-600 py-5 text-3xl font-bold"
+    >
+      Continue
+    </button>
+)}
 
         {/* RETAKE */}
         {step > 0 && (

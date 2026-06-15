@@ -48,103 +48,39 @@ const {
   try {
     setLoading(true);
 
-    const response =
-      await fetch(
-        "/api/create-order",
-        {
-          method: "POST",
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!data.success) {
-      alert(
-        "Failed to create payment."
-      );
-
-      setLoading(false);
-
-      return;
-    }
-
-    const options = {
-      key:
-        process.env
-          .NEXT_PUBLIC_RAZORPAY_KEY_ID,
-
-      amount:
-        data.order.amount,
-
-      currency:
-        data.order.currency,
-
-      name: "Become Him",
-
-      description:
-        "Full Facial Analysis",
-
-      order_id:
-        data.order.id,
-       
-    handler: async (response: any) => {
-  const verifyResponse =
-    await fetch(
-      "/api/verify-payment",
+    const response = await fetch(
+      "/api/create-checkout",
       {
         method: "POST",
-
         headers: {
           "Content-Type":
             "application/json",
         },
-
         body: JSON.stringify({
-          ...response,
           uid: user?.uid,
+          email: user?.email,
         }),
       }
     );
 
-  const verifyData =
-    await verifyResponse.json();
+    const data =
+      await response.json();
 
-  if (!verifyData.success) {
-    alert(
-      "Payment verification failed."
-    );
+    if (!response.ok) {
+      throw new Error(
+        "Failed to create checkout"
+      );
+    }
 
-    return;
-  }
-
-  setPurchased(true);
-
-  router.push(
-    "/recommendations"
-  );
-},
-
-      theme: {
-        color: "#dc2626",
-      },
-    };
-
-    const razorpay =
-      new (
-        window as any
-      ).Razorpay(options);
-
-    razorpay.open();
-
-    setLoading(false);
+    window.location.href =
+      data.checkoutUrl;
   } catch (error) {
     console.error(error);
 
     alert(
-      "Payment failed."
+      "Unable to start payment."
     );
-
+  } finally {
     setLoading(false);
   }
 }
@@ -265,7 +201,7 @@ const {
 </p>
 
 <h2 className="mt-2 text-6xl font-bold">
-  ₹299
+  $3.14
 </h2>
 
 <p className="mt-3 text-white/40">

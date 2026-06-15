@@ -1,3 +1,168 @@
+// "use client";
+
+// import {
+//   createContext,
+//   useContext,
+//   useEffect,
+//   useState,
+// } from "react";
+
+// import {
+//   onAuthStateChanged,
+//   User,
+// } from "firebase/auth";
+
+// import {
+//   doc,
+//   getDoc,
+// } from "firebase/firestore";
+
+// import {
+//   auth,
+//   db,
+// } from "@/lib/firebase";
+
+// import {
+//   useScanStore,
+// } from "@/stores/scanstore";
+
+// type AuthContextType = {
+//   user: User | null;
+//   loading: boolean;
+//   isAdmin: boolean;
+// };
+
+// const AuthContext =
+//   createContext<AuthContextType>({
+//     user: null,
+//     loading: true,
+//     isAdmin: false,
+//   });
+
+// export function AuthProvider({
+//   children,
+// }: {
+//   children: React.ReactNode;
+// }) {
+//   const [user, setUser] =
+//     useState<User | null>(null);
+
+//   const [loading, setLoading] =
+//     useState(true);
+
+//   const [isAdmin, setIsAdmin] =
+//   useState(false);
+
+//   useEffect(() => {
+//     const unsubscribe =
+//       onAuthStateChanged(
+//         auth,
+//         async (
+//           firebaseUser
+//         ) => {
+//           setUser(
+//             firebaseUser
+//           );
+
+//           if (
+//             firebaseUser
+//           ) {
+//             try {
+//               const snapshot =
+//                 await getDoc(
+//                   doc(
+//                     db,
+//                     "users",
+//                     firebaseUser.uid
+//                   )
+//                 );
+
+//               if (
+//                 snapshot.exists()
+//               ) {
+//                 const data =
+//                   snapshot.data();
+
+//                 if (
+//                   data.analysis
+//                 ) {
+//                   useScanStore
+//                     .getState()
+//                     .setAnalysis(
+//                       data.analysis
+//                     );
+//                 }
+
+//                 if (data.imageUrls) 
+//                   {
+//                     useScanStore
+//                     .getState()
+//                     .setImageUrls(
+//                     data.imageUrls
+//                  );
+//               }
+
+//                 useScanStore
+//                   .getState()
+//                   .setPurchased(
+//                     data.hasPurchased ||
+//                       false
+//                   );
+
+//                   setIsAdmin(
+//   data.isAdmin || false
+// );
+//               }
+//             } catch (
+//               error
+//             ) {
+//               console.error(
+//                 "Failed to restore user data:",
+//                 error
+//               );
+//             }
+//           } else {
+//             useScanStore
+//               .getState()
+//               .setPurchased(
+//                 false
+//               );
+
+//             useScanStore
+//               .getState()
+//               .setAnalysis(
+//                 null as any
+//               );
+
+//               setIsAdmin(false);
+//           }
+
+//           setLoading(false);
+//         }
+//       );
+
+//     return () =>
+//       unsubscribe();
+//   }, []);
+
+//   return (
+//     <AuthContext.Provider
+//       value={{
+//         user,
+//         loading,
+//       }}
+//     >
+//       {children}
+//     </AuthContext.Provider>
+//   );
+// }
+
+// export const useAuth =
+//   () =>
+//     useContext(
+//       AuthContext
+//     );
+
 "use client";
 
 import {
@@ -29,12 +194,14 @@ import {
 type AuthContextType = {
   user: User | null;
   loading: boolean;
+  isAdmin: boolean;
 };
 
 const AuthContext =
   createContext<AuthContextType>({
     user: null,
     loading: true,
+    isAdmin: false,
   });
 
 export function AuthProvider({
@@ -48,20 +215,17 @@ export function AuthProvider({
   const [loading, setLoading] =
     useState(true);
 
+  const [isAdmin, setIsAdmin] =
+    useState(false);
+
   useEffect(() => {
     const unsubscribe =
       onAuthStateChanged(
         auth,
-        async (
-          firebaseUser
-        ) => {
-          setUser(
-            firebaseUser
-          );
+        async (firebaseUser) => {
+          setUser(firebaseUser);
 
-          if (
-            firebaseUser
-          ) {
+          if (firebaseUser) {
             try {
               const snapshot =
                 await getDoc(
@@ -72,15 +236,11 @@ export function AuthProvider({
                   )
                 );
 
-              if (
-                snapshot.exists()
-              ) {
+              if (snapshot.exists()) {
                 const data =
                   snapshot.data();
 
-                if (
-                  data.analysis
-                ) {
+                if (data.analysis) {
                   useScanStore
                     .getState()
                     .setAnalysis(
@@ -88,14 +248,13 @@ export function AuthProvider({
                     );
                 }
 
-                if (data.imageUrls) 
-                  {
-                    useScanStore
+                if (data.imageUrls) {
+                  useScanStore
                     .getState()
                     .setImageUrls(
-                    data.imageUrls
-                 );
-              }
+                      data.imageUrls
+                    );
+                }
 
                 useScanStore
                   .getState()
@@ -103,10 +262,12 @@ export function AuthProvider({
                     data.hasPurchased ||
                       false
                   );
+
+                setIsAdmin(
+                  data.isAdmin || false
+                );
               }
-            } catch (
-              error
-            ) {
+            } catch (error) {
               console.error(
                 "Failed to restore user data:",
                 error
@@ -115,23 +276,22 @@ export function AuthProvider({
           } else {
             useScanStore
               .getState()
-              .setPurchased(
-                false
-              );
+              .setPurchased(false);
 
             useScanStore
               .getState()
               .setAnalysis(
                 null as any
               );
+
+            setIsAdmin(false);
           }
 
           setLoading(false);
         }
       );
 
-    return () =>
-      unsubscribe();
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -139,6 +299,7 @@ export function AuthProvider({
       value={{
         user,
         loading,
+        isAdmin,
       }}
     >
       {children}
@@ -146,8 +307,5 @@ export function AuthProvider({
   );
 }
 
-export const useAuth =
-  () =>
-    useContext(
-      AuthContext
-    );
+export const useAuth = () =>
+  useContext(AuthContext);

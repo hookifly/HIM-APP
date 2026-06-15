@@ -128,3 +128,14 @@
     @apply font-sans;
   }
 }
+
+@keyframes scan {
+  0%, 100% { top: 30%; opacity: 0; }
+  20% { opacity: 0.6; }
+  50% { top: 70%; opacity: 0.6; }
+  80% { opacity: 0; }
+}
+.animate-scan {
+  position: absolute;
+  animation: scan 4s ease-in-out infinite;
+}
