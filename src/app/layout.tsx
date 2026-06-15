@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+        <Script src="https://live.dodopayments.com/v1/checkouts" />
   <AuthProvider>
     {children}
   </AuthProvider>

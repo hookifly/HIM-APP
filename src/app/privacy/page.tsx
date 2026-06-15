@@ -21,7 +21,7 @@ export default function PrivacyPage() {
 
         <p>
           Payment information is handled
-          securely by Razorpay.
+          securely by Dodopayments.
         </p>
 
         <p>

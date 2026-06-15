@@ -10,6 +10,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { useScanStore } from "@/stores/scanstore";
 import { ScoreCard } from "@/components/results/scorecard";
 import { MetricPill } from "@/components/results/metrics";
+import { useAuth } from "@/context/auth-context";
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -20,6 +21,13 @@ export default function ResultsPage() {
     analysis,
     hasPurchased,
   } = useScanStore();
+
+  const {
+  isAdmin,
+} = useAuth();
+
+const isPremium =
+  hasPurchased || isAdmin;
 
   if (!analysis) {
     return (
@@ -124,14 +132,14 @@ export default function ResultsPage() {
               Masculinity Score
             </h3>
 
-            {!hasPurchased && (
+            {!isPremium && (
               <span className="text-red-500">
                 🔒 Locked
               </span>
             )}
           </div>
 
-          {hasPurchased ? (
+          {isPremium ? (
             <div className="mt-5 text-center">
               <p className="text-6xl font-bold text-red-500">
                 {analysis.masculinityScore}
@@ -162,7 +170,7 @@ export default function ResultsPage() {
         {/* CTA */}
         <button
           onClick={() => {
-            if (hasPurchased) {
+            if (isPremium) {
               router.push("/recommendations");
             } else {
               router.push("/paywall");
@@ -170,7 +178,7 @@ export default function ResultsPage() {
           }}
           className="mt-10 w-full rounded-full bg-blue-700 py-5 text-3xl font-bold"
         >
-          {hasPurchased
+          {isPremium
             ? "View Your Glow-Up Plan"
             : "Unlock Full Analysis"}
         </button>
