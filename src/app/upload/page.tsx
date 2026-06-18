@@ -46,7 +46,7 @@ const steps = [
   },
 ];
 
-export default function UploadPage() {
+export default function UploadPageClient() {
   const router = useRouter();
 
   const searchParams = useSearchParams();
