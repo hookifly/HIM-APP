@@ -21,8 +21,6 @@ import { useRouter } from "next/navigation";
 
 import { useScanStore } from "@/stores/scanstore";
 
-import { useSearchParams } from "next/navigation";
-
 const steps = [
   {
     key: "front",
@@ -49,10 +47,6 @@ const steps = [
 export default function UploadPageClient() {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-
-  const error = searchParams.get("error");
-
   const inputRef =
     useRef<HTMLInputElement>(null);
 
@@ -69,7 +63,18 @@ export default function UploadPageClient() {
   const [images, setLocalImages] =
     useState<string[]>([]);
 
+  const [error, setError] =
+  useState<string | null>(null);
+
   const currentStep = steps[step];
+
+  useEffect(() => {
+  const params = new URLSearchParams(
+    window.location.search
+  );
+
+  setError(params.get("error"));
+}, []);
 
   useEffect(() => {
   clearScan();
