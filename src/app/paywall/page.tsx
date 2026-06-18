@@ -29,13 +29,13 @@ const {
 
   if (!analysis) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-black text-white">
+      <main className="flex min-h-screen items-center justify-center bg-black text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
 
         <button
           onClick={() =>
             router.push("/upload")
           }
-          className="rounded-full bg-red-600 px-8 py-4 text-2xl font-bold"
+          className="rounded-2xl bg-[#880808] px-8 py-4 text-lg font-semibold uppercase tracking-[0.06em]"
         >
           Start Scan
         </button>
@@ -85,30 +85,52 @@ const {
   }
 }
 
+  const lockedItems = [
+    "Masculinity Score",
+    "Beard Suitability Analysis",
+    "Jawline Assessment",
+    "Hairstyle Recommendations",
+    "Skin Improvement Plan",
+    "Top Glow-Up Priorities",
+    "Personalized Action Plan",
+    "AI Improvement Strategy",
+  ];
+
   return (
-    <main className="min-h-screen bg-black px-4 py-6 text-white">
-      <div className="mx-auto max-w-sm">
+    <main className="relative min-h-screen overflow-hidden bg-black px-4 py-8 text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
+
+      {/* Ambient glow */}
+      <div
+        className="pointer-events-none absolute -top-20 left-1/2 h-[320px] w-[320px] -translate-x-1/2 rounded-full"
+        style={{ background: "radial-gradient(circle, rgba(136,8,8,0.18) 0%, transparent 70%)" }}
+      />
+
+      <div className="relative z-[2] mx-auto max-w-sm">
 
         {/* TITLE */}
         <div className="text-center">
 
-          <h1 className="text-5xl font-bold">
-            Analysis Ready
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-[#880808]/15 px-3.5 py-1.5">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#E8857F]" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#E8857F]" style={{ fontFamily: "Inter, sans-serif" }}>
+              Analysis Complete
+            </span>
+          </div>
+
+          <h1 className="font-bold leading-[1.1]" style={{ fontSize: "38px" }}>
+            Your Report Is Ready
           </h1>
 
-          <p className="mt-4 text-xl text-white/60">
-            Unlock your complete
-            facial report, masculinity
-            analysis, and personalized
-            glow-up roadmap.
+          <p className="mt-3.5 text-sm leading-relaxed text-white/45" style={{ fontFamily: "Inter, sans-serif" }}>
+            Unlock your complete facial report, masculinity analysis, and personalized glow-up roadmap.
           </p>
 
         </div>
 
         {/* FACE */}
-        <div className="mt-12 flex justify-center">
+        <div className="mt-9 flex justify-center">
 
-          <div className="relative h-40 w-40 overflow-hidden rounded-full border border-white/10">
+          <div className="relative h-36 w-36 overflow-hidden rounded-full border-2 border-[#880808]/30">
 
             <Image
               src={
@@ -124,95 +146,88 @@ const {
         </div>
 
         {/* SCORE PREVIEW */}
-        <div className="mt-8 rounded-[28px] bg-zinc-950 p-5">
+        <div
+          className="mt-7 rounded-3xl p-6"
+          style={{ background: "linear-gradient(160deg, #0A2C47 0%, #050D14 100%)" }}>
 
-          <p className="text-white/50">
-            Current Score
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
+                Current Score
+              </p>
+              <h2 className="mt-1.5 font-bold" style={{ fontSize: "40px", lineHeight: "1" }}>
+                {analysis.currentScore}
+              </h2>
+            </div>
 
-          <h2 className="mt-2 text-5xl font-bold">
-            {analysis.currentScore}
-          </h2>
+            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#880808]/20 text-base font-bold text-[#E8857F]">
+              →
+            </div>
 
-          <p className="mt-5 text-white/50">
-            Potential Score
-          </p>
-
-          <h2 className="mt-2 text-5xl font-bold text-green-400">
-            {analysis.potentialScore}
-          </h2>
+            <div className="text-right">
+              <p className="text-xs uppercase tracking-[0.15em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
+                Potential Score
+              </p>
+              <h2 className="mt-1.5 font-bold text-[#5EE079]" style={{ fontSize: "40px", lineHeight: "1" }}>
+                {analysis.potentialScore}
+              </h2>
+            </div>
+          </div>
 
         </div>
 
         {/* LOCKED CONTENT */}
-        <div className="mt-10 rounded-[32px] bg-zinc-950 p-6">
+        <div className="mt-7 rounded-3xl border border-white/7 bg-white/[0.02] p-6">
 
-          <div className="flex items-center justify-between">
+          <div className="mb-5 flex items-center justify-between">
 
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-lg font-semibold">
               Full Report Includes
             </h2>
 
-            <Lock className="text-red-500" />
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#880808]/15">
+              <Lock size={15} className="text-[#E8857F]" />
+            </div>
 
           </div>
 
-          <div className="mt-8 space-y-4">
+          <div className="flex flex-col gap-3">
 
-            <p className="text-xl">
-              🔒 Masculinity Score
-            </p>
-
-            <p className="text-xl">
-              🔒 Beard Suitability Analysis
-            </p>
-
-            <p className="text-xl">
-              🔒 Jawline Assessment
-            </p>
-
-            <p className="text-xl">
-              🔒 Hairstyle Recommendations
-            </p>
-
-            <p className="text-xl">
-              🔒 Skin Improvement Plan
-            </p>
-
-            <p className="text-xl">
-              🔒 Top Glow-Up Priorities
-            </p>
-
-            <p className="text-xl">
-              🔒 Personalized Action Plan
-            </p>
-
-            <p className="text-xl">
-              🔒 AI Improvement Strategy
-            </p>
+            {lockedItems.map((item) => (
+              <div key={item} className="flex items-center gap-3">
+                <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-md bg-white/5">
+                  <Lock size={11} className="text-white/30" />
+                </div>
+                <span className="text-sm text-white/65" style={{ fontFamily: "Inter, sans-serif" }}>
+                  {item}
+                </span>
+              </div>
+            ))}
 
           </div>
 
         </div>
 
         {/* PRICE */}
-        <p className="text-lg text-white/50">
-  One-time payment
-</p>
+        <div className="mt-9 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
+            One-time payment
+          </p>
 
-<h2 className="mt-2 text-6xl font-bold">
-  $3.14
-</h2>
+          <h2 className="mt-2 font-bold" style={{ fontSize: "52px", lineHeight: "1" }}>
+            $3.14
+          </h2>
 
-<p className="mt-3 text-white/40">
-  Unlock complete masculinity analysis and your personalized improvement plan.
-</p>
+          <p className="mt-2.5 text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
+            Unlock complete masculinity analysis and your personalized improvement plan.
+          </p>
+        </div>
 
         {/* CTA */}
         <button
           onClick={handleUnlock}
           disabled={loading}
-          className="mt-10 w-full rounded-full bg-red-600 py-5 text-3xl font-bold transition-all hover:bg-red-500"
+          className="mt-8 w-full rounded-2xl bg-[#880808] py-[18px] text-base font-semibold uppercase tracking-[0.06em] text-white transition-all active:scale-[0.98] disabled:opacity-60"
         >
           {
   loading
@@ -221,12 +236,17 @@ const {
 }
         </button>
 
+        <p className="mt-3.5 text-center text-[11px] uppercase tracking-[0.15em] text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
+          Secure checkout · Instant access
+        </p>
+
         {/* BACK */}
         <button
           onClick={() =>
   router.push("/results")
 }
-          className="mt-6 w-full text-center text-xl text-white/40"
+          className="mt-6 w-full text-center text-sm text-white/40"
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Back
         </button>

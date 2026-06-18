@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     } = await request.json();
 
     const response = await fetch(
-      "https://live.dodopayments.com/v1/checkouts",
+      "https://live.dodopayments.com/checkouts",
       {
         method: "POST",
         headers: {
@@ -39,13 +39,27 @@ export async function POST(request: Request) {
       }
     );
 
-    const data =
-      await response.json();
+    
+const text = await response.text();
 
-    return NextResponse.json({
+console.log("Status:", response.status);
+console.log("Dodo response:", text);
+
+if (!response.ok) {
+  return NextResponse.json(
+    { error: text },
+    { status: response.status }
+  );
+}
+
+const data = JSON.parse(text);
+
+return NextResponse.json({
   checkoutUrl:
-    data.payment_link,
+    data.payment_link ||
+    data.checkout_url,
 });
+
   } catch (error) {
     console.error(error);
 

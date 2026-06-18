@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Script src="https://live.dodopayments.com/v1/checkouts" />
+        <Script src="https://live.dodopayments.com/checkouts" />
   <AuthProvider>
     {children}
   </AuthProvider>

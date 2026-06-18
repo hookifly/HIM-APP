@@ -136,28 +136,30 @@ const report = analysis;
   }
 
   return (
-    <main className="min-h-screen bg-black px-4 py-6 text-white">
+    <main className="min-h-screen bg-black px-4 py-6 text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
       <div className="mx-auto max-w-sm">
 
         {/* HEADER */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-3.5">
           <button
             onClick={() =>
               router.push("/results")
             }
-            className="mr-4"
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/8 bg-white/[0.03]"
           >
-            <ArrowLeft size={34} />
+            <ArrowLeft size={20} />
           </button>
 
-          <h1 className="flex-1 text-center text-4xl font-bold">
+          <h1 className="flex-1 text-center font-semibold uppercase tracking-[0.08em]" style={{ fontSize: "22px" }}>
             Recommendations
           </h1>
+
+          <div className="h-11 w-11 flex-shrink-0" />
         </div>
 
         {/* FACE */}
-        <div className="mt-10 flex justify-center">
-          <div className="relative h-40 w-40 overflow-hidden rounded-full border border-white/10">
+        <div className="mt-9 flex justify-center">
+          <div className="relative h-36 w-36 overflow-hidden rounded-full border border-white/10">
             <Image
               src={
                 imageUrls[0] ||
@@ -172,7 +174,7 @@ const report = analysis;
         </div>
 
         {/* GLOW-UP CARD */}
-        <div className="mt-10">
+        <div className="mt-9">
           <GlowupCard
             current={analysis.currentScore}
             potential={analysis.potentialScore}
@@ -180,16 +182,18 @@ const report = analysis;
         </div>
 
         {/* TOP PRIORITIES */}
-        <div className="mt-10">
-          <div className="flex items-center gap-3">
-            <Sparkles className="text-blue-500" />
+        <div className="mt-9">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#09008B]/25">
+              <Sparkles size={17} className="text-[#7C9FC9]" />
+            </div>
 
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-xl font-semibold">
               Top Priorities
             </h2>
           </div>
 
-          <div className="mt-6 space-y-5">
+          <div className="mt-5 space-y-3">
             {analysis.priorities.map(
               (item, index) => (
                 <PriorityCard
@@ -204,7 +208,7 @@ const report = analysis;
         </div>
 
         {/* RECOMMENDATIONS */}
-        <div className="mt-10 space-y-5">
+        <div className="mt-9 space-y-3">
           {analysis.recommendations.map(
             (item) => (
               <RecommendationCard
@@ -220,8 +224,11 @@ const report = analysis;
         {/* DOWNLOAD PDF */}
         <button
           onClick={downloadReport}
-          className="mt-12 w-full rounded-full bg-red-600 py-5 text-3xl font-bold"
+          className="mt-10 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#880808] py-[18px] text-sm font-semibold uppercase tracking-[0.06em] text-white"
         >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+          </svg>
           Download PDF Report
         </button>
 
@@ -230,7 +237,7 @@ const report = analysis;
           onClick={() =>
             router.push("/results")
           }
-          className="mt-6 w-full rounded-full bg-blue-700 py-5 text-3xl font-bold"
+          className="mt-3.5 w-full rounded-2xl border border-white/10 bg-white/[0.03] py-[18px] text-sm font-semibold uppercase tracking-[0.06em] text-white/65"
         >
           Back to Insights
         </button>

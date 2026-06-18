@@ -13,6 +13,7 @@ export default function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function checkRedirect() {
@@ -27,16 +28,37 @@ export default function SignInPage() {
   }, []); // ← empty, not [router]
 
   async function handleSignin() {
-    try {
-      setLoading(true);
-      const result = await signin(email, password);
-      if (result.user) router.push("/dashboard");
-    } catch (error: any) {
-      alert(error?.message || "Signin failed");
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+    setError("");
+
+    const result = await signin(
+      email,
+      password
+    );
+
+    if (result.user) {
+      router.push("/dashboard");
     }
+  } catch (error: any) {
+    switch (error.code) {
+      case "auth/invalid-credential":
+      case "auth/wrong-password":
+      case "auth/user-not-found":
+        setError(
+          "Incorrect email or password. Please try again."
+        );
+        break;
+
+      default:
+        setError(
+          "Something went wrong. Please try again."
+        );
+    }
+  } finally {
+    setLoading(false);
   }
+}
 
   async function handleGoogle() {
     try {
@@ -44,19 +66,24 @@ export default function SignInPage() {
       const result = await googleSignin();
       if (result?.user) router.push("/dashboard");
     } catch (error: any) {
-      alert(error?.message || "Google signin failed");
+      setError("Google sign in failed. Please try again.");
       setLoading(false);
     }
   }
 
   return (
     <AuthLayout title="Welcome Back" subtitle="Continue becoming your best self.">
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         <Input type="email" placeholder="Email" value={email}
           onChange={(e) => setEmail(e.target.value)} />
 
         <Input type="password" placeholder="Password" value={password}
           onChange={(e) => setPassword(e.target.value)} />
+
+        {error && ( <div className="rounded-[14px] border border-[#C23636]/30 bg-[#C23636]/8 px-4 py-3.5 text-[13px] text-[#E8857F]" style={{ fontFamily: "Inter, sans-serif" }}>
+        {error}
+       </div>
+       )}
 
         <Button type="button" onClick={handleSignin} disabled={loading} className="w-full">
           {loading ? "Signing In..." : "Sign In"}
@@ -67,9 +94,9 @@ export default function SignInPage() {
           {loading ? "Loading..." : "Continue with Google"}
         </Button>
 
-        <p className="pt-4 text-center text-sm text-zinc-400">
+        <p className="pt-3 text-center text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-white">Sign up</Link>
+          <Link href="/signup" className="font-medium text-[#7C9FC9] no-underline">Sign up</Link>
         </p>
       </div>
     </AuthLayout>
