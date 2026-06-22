@@ -29,15 +29,20 @@ const {
   imageUrls,
 } = useScanStore();
 
-  const [activeTab, setActiveTab] =
-useState<"scan" | "insights">(
-  searchParams.get("tab") ===
-    "insights"
-    ? "insights"
-    : analysis && !isAdmin
-    ? "insights"
-    : "scan"
-);
+const [activeTab, setActiveTab] =
+  useState<"scan" | "insights">(
+    analysis && !isAdmin
+      ? "insights"
+      : "scan"
+  );
+
+useEffect(() => {
+  if (
+    searchParams.get("tab") === "insights"
+  ) {
+    setActiveTab("insights");
+  }
+}, [searchParams]);
 
 useEffect(() => {
   if (hasAnalysis && !isAdmin) {

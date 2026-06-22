@@ -16,26 +16,27 @@ export async function POST(request: Request) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          product_cart: [
-            {
-              product_id:
-                process.env
-                  .NEXT_PUBLIC_DODO_PRODUCT_ID,
-              quantity: 1,
-            },
-          ],
+  product_cart: [
+    {
+      product_id:
+        process.env.NEXT_PUBLIC_DODO_PRODUCT_ID,
+      quantity: 1,
+    },
+  ],
 
-          customer: {
-            email,
-          },
+  customer: {
+    email,
+  },
 
-          metadata: {
-            uid,
-          },
+  metadata: {
+    uid,
+  },
 
-          return_url:
-            `${process.env.NEXT_PUBLIC_BASE_URL}/results`,
-        }),
+  minimal_address: true,
+
+  return_url:
+    `${process.env.NEXT_PUBLIC_BASE_URL}/results`,
+}),
       }
     );
 
