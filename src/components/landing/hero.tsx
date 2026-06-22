@@ -1,10 +1,11 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Hero() {
   return (
     <section
-      className="relative flex min-h-screen flex-col justify-between overflow-hidden px-6 pb-9 pt-12"
-      style={{ fontFamily: "'Oswald', sans-serif", background: "radial-gradient(circle at 30% 0%, #0A2C47 0%, #000 55%)" }}>
+      className="relative flex min-h-screen flex-col bg-black pb-16 pt-2 justify-between overflow-hidden px-6 pb-9 pt-12"
+      style={{ fontFamily: "'Oswald', sans-serif"}}>
 
       {/* Ambient glow */}
       <div
@@ -12,27 +13,28 @@ export function Hero() {
         style={{ background: "radial-gradient(circle, rgba(9,0,139,0.25) 0%, transparent 70%)" }}
       />
 
-      {/* Scan badge */}
-      <div className="absolute right-6 top-12 flex h-[46px] w-[46px] items-center justify-center rounded-full bg-[#09008B]/30">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C9FC9" strokeWidth="1.8">
-          <path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      </div>
+      
 
       {/* Top label */}
-      <div className="flex items-center gap-2.5">
-        
-        <div className="h-2 w-2 rounded-full bg-[#C23636]" />
-        <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50" style={{ fontFamily: "Inter, sans-serif" }}>
-          Facial Masculinity Intelligence
-        </span>
-        <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[#880808]/15 px-3.5 py-[7px]">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#E8857F]" style={{ fontFamily: "Inter, sans-serif" }}>
-            Macho Meter AI
-          </span>
-        </div>
-      </div>
+      {/* Top label */}
+<div className="flex items-center justify-between">
+  <div className="flex items-center gap-2.5">
+    <div className="h-2 w-2 flex-shrink-0 rounded-full bg-[#C23636]" />
+    <span
+      className="text-[11px] font-semibold uppercase tracking-[0.25em] text-white/50"
+      style={{ fontFamily: "Inter, sans-serif" }}>
+      Facial Masculinity Intelligence
+    </span>
+  </div>
+
+  <Image
+    src="/mmlogo.jpg"
+    alt="Macho Meter AI"
+    width={80}
+    height={28}
+    className="object-contain"
+  />
+</div>
 
       {/* Main content */}
       <div className="flex flex-col gap-6">

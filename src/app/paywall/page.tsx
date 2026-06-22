@@ -10,7 +10,7 @@ import { useScanStore } from "@/stores/scanstore";
 
 import { useAuth } from "@/context/auth-context";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function PaywallPage() {
   const [loading, setLoading] =
@@ -24,25 +24,15 @@ const {
   images,
   imageUrls,
   analysis,
-  setPurchased,
 } = useScanStore();
 
+  useEffect(() => {
   if (!analysis) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-black text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
-
-        <button
-          onClick={() =>
-            router.push("/upload")
-          }
-          className="rounded-2xl bg-[#880808] px-8 py-4 text-lg font-semibold uppercase tracking-[0.06em]"
-        >
-          Start Scan
-        </button>
-
-      </main>
-    );
+    router.replace("/results");
   }
+}, [analysis, router]);
+
+if (!analysis) return null;
 
   async function handleUnlock() {
   try {
@@ -87,13 +77,13 @@ const {
 
   const lockedItems = [
     "Masculinity Score",
+    "Detailed Facial Analysis",
     "Beard Suitability Analysis",
     "Jawline Assessment",
     "Hairstyle Recommendations",
     "Skin Improvement Plan",
     "Top Glow-Up Priorities",
     "Personalized Action Plan",
-    "AI Improvement Strategy",
   ];
 
   return (
@@ -122,7 +112,7 @@ const {
           </h1>
 
           <p className="mt-3.5 text-sm leading-relaxed text-white/45" style={{ fontFamily: "Inter, sans-serif" }}>
-            Unlock your complete facial report, masculinity analysis, and personalized glow-up roadmap.
+            Unlock your complete facial report, masculinity score, and personalized glow-up roadmap.
           </p>
 
         </div>
@@ -147,34 +137,118 @@ const {
 
         {/* SCORE PREVIEW */}
         <div
-          className="mt-7 rounded-3xl p-6"
-          style={{ background: "linear-gradient(160deg, #0A2C47 0%, #050D14 100%)" }}>
+  className="mt-7 rounded-3xl p-8"
+  style={{ background: "linear-gradient(160deg, #0A2C47 0%, #050D14 100%)" }}>
 
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.15em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
-                Current Score
-              </p>
-              <h2 className="mt-1.5 font-bold" style={{ fontSize: "40px", lineHeight: "1" }}>
-                {analysis.currentScore}
-              </h2>
-            </div>
+  <div className="flex items-center justify-between">
+    <div>
+      <p
+        className="text-[11px] uppercase tracking-[0.2em] text-white/35"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        Current Score
+      </p>
+      <h2
+        className="mt-3 font-bold"
+        style={{ fontSize: "64px", lineHeight: "1" }}>
+        {analysis.currentScore}
+      </h2>
+      <p
+        className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-white/25"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        out of 100
+      </p>
+    </div>
 
-            <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#880808]/20 text-base font-bold text-[#E8857F]">
-              →
-            </div>
+    <div className="flex flex-col items-center gap-2">
+      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#880808]/25 text-xl font-bold text-[#E8857F]">
+        →
+      </div>
+      <span
+        className="text-[10px] uppercase tracking-[0.1em] text-white/20"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        gap
+      </span>
+    </div>
 
-            <div className="text-right">
-              <p className="text-xs uppercase tracking-[0.15em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
-                Potential Score
-              </p>
-              <h2 className="mt-1.5 font-bold text-[#5EE079]" style={{ fontSize: "40px", lineHeight: "1" }}>
-                {analysis.potentialScore}
-              </h2>
-            </div>
-          </div>
+    <div className="text-right">
+      <p
+        className="text-[11px] uppercase tracking-[0.2em] text-white/35"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        Potential Score
+      </p>
+      <h2
+        className="mt-3 font-bold text-[#5EE079]"
+        style={{ fontSize: "64px", lineHeight: "1" }}>
+        {analysis.potentialScore}
+      </h2>
+      <p
+        className="mt-1.5 text-[11px] uppercase tracking-[0.1em] text-white/25"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        out of 100
+      </p>
+    </div>
+  </div>
 
+  {/* Progress bar showing gap */}
+  <div className="mt-8">
+    <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/8">
+      <div
+        className="h-full rounded-full bg-[#880808]"
+        style={{ width: `${analysis.currentScore}%` }}
+      />
+    </div>
+    <div className="mt-2 flex items-center justify-between">
+      <span
+        className="text-[10px] uppercase tracking-[0.1em] text-white/25"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        Current
+      </span>
+      <span
+        className="text-[10px] uppercase tracking-[0.1em] text-[#5EE079]/60"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        +{analysis.potentialScore - analysis.currentScore} unlockable
+      </span>
+      <span
+        className="text-[10px] uppercase tracking-[0.1em] text-white/25"
+        style={{ fontFamily: "Inter, sans-serif" }}>
+        Potential
+      </span>
+    </div>
+  </div>
+
+</div>
+
+        {/* PRICE */}
+        <div className="mt-9 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
+            One-time payment
+          </p>
+
+          <h2 className="mt-2 font-bold" style={{ fontSize: "52px", lineHeight: "1" }}>
+            $3.14
+          </h2>
+
+          <p className="mt-2.5 text-sm text-white/50" style={{ fontFamily: "Inter, sans-serif" }}>
+            Get your masculinity score and your personalized masculinity improvement plan.
+          </p>
         </div>
+
+        {/* CTA */}
+        <button
+          onClick={handleUnlock}
+          disabled={loading}
+          className="mt-8 w-full rounded-2xl bg-[#880808] py-[18px] text-base font-semibold uppercase tracking-[0.06em] text-white transition-all active:scale-[0.98] disabled:opacity-60"
+        >
+          {
+  loading
+    ? "Loading..."
+    : "Unlock Full Analysis"
+}
+        </button>
+
+        <p className="mt-3.5 text-center text-[11px] uppercase tracking-[0.15em] text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
+          Secure checkout · Instant access
+        </p>
 
         {/* LOCKED CONTENT */}
         <div className="mt-7 rounded-3xl border border-white/7 bg-white/[0.02] p-6">
@@ -207,38 +281,6 @@ const {
           </div>
 
         </div>
-
-        {/* PRICE */}
-        <div className="mt-9 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
-            One-time payment
-          </p>
-
-          <h2 className="mt-2 font-bold" style={{ fontSize: "52px", lineHeight: "1" }}>
-            $3.14
-          </h2>
-
-          <p className="mt-2.5 text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
-            Unlock complete masculinity analysis and your personalized improvement plan.
-          </p>
-        </div>
-
-        {/* CTA */}
-        <button
-          onClick={handleUnlock}
-          disabled={loading}
-          className="mt-8 w-full rounded-2xl bg-[#880808] py-[18px] text-base font-semibold uppercase tracking-[0.06em] text-white transition-all active:scale-[0.98] disabled:opacity-60"
-        >
-          {
-  loading
-    ? "Loading..."
-    : "Unlock Full Analysis"
-}
-        </button>
-
-        <p className="mt-3.5 text-center text-[11px] uppercase tracking-[0.15em] text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
-          Secure checkout · Instant access
-        </p>
 
         {/* BACK */}
         <button

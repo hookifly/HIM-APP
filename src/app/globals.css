@@ -153,6 +153,15 @@ h1, h2, h3 {
   50% { top: 70%; opacity: 0.6; }
   80% { opacity: 0; }
 }
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker 28s linear infinite;
+}
+
 .animate-scan {
   position: absolute;
   animation: scan 4s ease-in-out infinite;

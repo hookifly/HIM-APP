@@ -13,7 +13,7 @@ export function CTA() {
       {/* Scrolling archetype ticker */}
       <div className="mb-8 overflow-hidden">
         <p className="mb-3.5 px-[22px] text-[11px] font-semibold uppercase tracking-[0.25em] text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
-          Your archetype is one of:
+          Your archetype is one of these & more:
         </p>
         <div className="relative w-full overflow-hidden">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r from-black to-transparent" />

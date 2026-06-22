@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { useAuth } from "@/context/auth-context";
 
@@ -13,11 +13,15 @@ import Image from "next/image";
 export default function DashboardPage() {
   const router = useRouter();
 
+  const searchParams =
+  useSearchParams();
+
   const {
   user,
   loading,
   isAdmin,
   hasAnalysis,
+  signOut,
 } = useAuth();
 
 const {
@@ -27,7 +31,10 @@ const {
 
   const [activeTab, setActiveTab] =
 useState<"scan" | "insights">(
-  analysis && !isAdmin
+  searchParams.get("tab") ===
+    "insights"
+    ? "insights"
+    : analysis && !isAdmin
     ? "insights"
     : "scan"
 );
@@ -248,12 +255,23 @@ useEffect(() => {
               {
 analysis && !isAdmin
   ? "Open Full Report"
-  : "Become Him"
+  : "Begin Scan"
 }
             </button>
 
           </div>
         )}
+
+        <div className="mt-8 flex justify-center">
+
+        <button
+  onClick={signOut}
+  className="text-[12px] font-medium uppercase tracking-[0.12em] text-white/30 transition hover:text-white/60"
+  style={{ fontFamily: "Inter, sans-serif" }}
+>
+  Sign Out
+</button>
+</div>
 
       </div>
     </main>

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const steps = [
   {
     number: "01",
@@ -57,9 +59,23 @@ export function Process() {
 
             {/* Content */}
             <div className="pb-7 pt-1.5 flex-1">
-              <h3 className="mb-1.5 font-semibold leading-tight text-white" style={{ fontSize: "19px" }}>
-                {step.title}
-              </h3>
+
+              {/* Title row — scan icon only on step 01 */}
+              <div className="mb-1.5 flex items-center gap-2.5">
+                <h3 className="font-semibold leading-tight text-white" style={{ fontSize: "19px" }}>
+                  {step.title}
+                </h3>
+
+                {step.number === "01" && (
+                  <div className="flex h-[30px] w-[30px] flex-shrink-0 items-center justify-center rounded-full bg-[#09008B]/30">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#7C9FC9" strokeWidth="1.8">
+                      <path d="M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </div>
+                )}
+              </div>
+
               <p className="text-[13.5px] leading-relaxed text-white/45" style={{ fontFamily: "Inter, sans-serif" }}>
                 {step.description}
               </p>
@@ -68,7 +84,7 @@ export function Process() {
               {step.number === "03" && (
                 <div className="mt-4 rounded-[18px] border-[1.5px] border-dashed border-[#7C9FC9]/30 bg-[#0A2C47]/[0.15] px-4 py-7 text-center">
                   {/*
-                    Replace this placeholder block with your real dashboard screenshot, e.g.:
+                    Replace this placeholder block with your real dashboard screenshot:
                     <Image src="/dashboard-preview.png" alt="Macho Meter AI dashboard preview" width={320} height={400} className="w-full rounded-xl" />
                   */}
                   <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-[#0A2C47]/50">

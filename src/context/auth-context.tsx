@@ -31,6 +31,7 @@ type AuthContextType = {
   loading: boolean;
   isAdmin: boolean;
   hasAnalysis: boolean;
+  signOut: () => Promise<void>;
 };
 
 const AuthContext =
@@ -39,7 +40,12 @@ const AuthContext =
     loading: true,
     isAdmin: false,
     hasAnalysis: false,
+    signOut: async () => {},
   });
+
+const signOut = async () => {
+  await auth.signOut();
+};
 
 export function AuthProvider({
   children,
@@ -148,6 +154,7 @@ value={{
   loading,
   isAdmin,
   hasAnalysis,
+  signOut,
 }}
 >
       {children}

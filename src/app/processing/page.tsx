@@ -70,6 +70,10 @@ useEffect(() => {
         "PROCESS SCAN STARTED"
       );
 
+      if (!user) {
+         return;
+        }
+
       if (files.length !== 3) {
             router.replace("/upload");
         return;
@@ -78,17 +82,21 @@ useEffect(() => {
       const controller =
         new AbortController();
 
+        let requestFinished = false;
+
       const timeoutId =
         setTimeout(() => {
-          controller.abort();
-        }, 30000);
+      if (!requestFinished) {
+         controller.abort();
+       }
+      }, 60000);
 
       const fifteenSecondTimer =
         setTimeout(() => {
           setMessage(
-            "Analysis is taking longer than usual due to high demand. Please wait a few more seconds..."
+            "Analysis is taking longer than usual due to high demand. Just few more seconds, do not refresh."
           );
-        }, 15000);
+        }, 20000);
 
       try {
         const formData =
@@ -146,6 +154,8 @@ const imageUrls =
             }
           );
 
+          requestFinished = true;
+
         clearTimeout(
           timeoutId
         );
@@ -173,8 +183,8 @@ const imageUrls =
         );
 
         if (user) {
-  await setDoc(
-    doc(db, "users", user.uid),
+            await setDoc(
+        doc(db, "users", user.uid),
     {
       analysis: data.analysis,
 
@@ -190,12 +200,11 @@ const imageUrls =
   );
 }
 
-        if (isAdmin) {
-  router.replace("/results");
-} else {
-  router.replace("/dashboard");
-}
+router.replace("/results");
+
       } catch (error: any) {
+        requestFinished = true;
+
         console.error(
           "Analysis Error:",
           error
