@@ -30,6 +30,7 @@ export default function ProcessingPage() {
   const {
     files,
     setAnalysis,
+    setImageUrls,
   } = useScanStore();
 
   const [frontImage, setFrontImage] =
@@ -141,6 +142,8 @@ if (!uploadData.success) {
 
 const imageUrls =
   uploadData.imageUrls;
+
+  setImageUrls(imageUrls);
 
         const response =
           await fetch(
