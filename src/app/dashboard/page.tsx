@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { useAuth } from "@/context/auth-context";
 
@@ -12,9 +12,6 @@ import Image from "next/image";
 
 export default function DashboardPage() {
   const router = useRouter();
-
-  const searchParams =
-  useSearchParams();
 
   const {
   user,
@@ -35,14 +32,6 @@ const [activeTab, setActiveTab] =
       ? "insights"
       : "scan"
   );
-
-useEffect(() => {
-  if (
-    searchParams.get("tab") === "insights"
-  ) {
-    setActiveTab("insights");
-  }
-}, [searchParams]);
 
 useEffect(() => {
   if (hasAnalysis && !isAdmin) {
