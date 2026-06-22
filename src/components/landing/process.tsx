@@ -24,6 +24,174 @@ const steps = [
   },
 ];
 
+function DashboardPreview() {
+  const currentScore = 78;
+  const potentialScore = 88;
+  const masculinityScore = 82;
+
+  // Ring math — circumference for r=42 = 2π×42 ≈ 263.9
+  const r = 42;
+  const circ = 2 * Math.PI * r;
+  const currentOffset = circ - (currentScore / 100) * circ;
+  const potentialOffset = circ - (potentialScore / 100) * circ;
+
+  // Large ring — r=58, circ ≈ 364.4
+  const rLg = 58;
+  const circLg = 2 * Math.PI * rLg;
+  const mascOffset = circLg - (masculinityScore / 100) * circLg;
+
+  return (
+    <div
+      className="mt-4 w-full overflow-hidden rounded-[20px] border border-white/8 p-5"
+      style={{ background: "linear-gradient(160deg, #0D0D0D 0%, #0A0A0A 100%)", fontFamily: "'Oswald', sans-serif" }}>
+
+      {/* Sample label */}
+      <p className="mb-4 text-center text-[10px] uppercase tracking-[0.25em] text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
+        Sample Result
+      </p>
+
+      {/* Archetype pill */}
+      <div
+        className="mb-5 w-full rounded-2xl py-4 text-center"
+        style={{ background: "linear-gradient(135deg, rgba(136,8,8,0.35) 0%, rgba(9,0,139,0.25) 100%)" }}>
+        <p className="mb-0.5 text-[10px] uppercase tracking-[0.2em] text-white/30" style={{ fontFamily: "Inter, sans-serif" }}>
+          Your Archetype
+        </p>
+        <span className="text-xl font-bold tracking-[0.06em] text-[#E8857F]">
+          WARRIOR
+        </span>
+      </div>
+
+      {/* Two score rings */}
+      <div className="mb-4 grid grid-cols-2 gap-3">
+
+        {/* Current Score */}
+        <div className="flex flex-col items-center rounded-2xl border border-white/6 bg-white/[0.02] py-5">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle
+              cx="50" cy="50" r={r}
+              fill="none"
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="9"
+            />
+            <circle
+              cx="50" cy="50" r={r}
+              fill="none"
+              stroke="#880808"
+              strokeWidth="9"
+              strokeLinecap="round"
+              strokeDasharray={circ}
+              strokeDashoffset={currentOffset}
+              transform="rotate(-90 50 50)"
+            />
+            <text
+              x="50" y="50"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill="#ffffff"
+              fontSize="22"
+              fontWeight="700"
+              fontFamily="Oswald, sans-serif">
+              {currentScore}
+            </text>
+          </svg>
+          <p className="mt-2 text-[9px] uppercase tracking-[0.15em] text-white/30" style={{ fontFamily: "Inter, sans-serif" }}>
+            Current Score
+          </p>
+        </div>
+
+        {/* Potential Score */}
+        <div className="flex flex-col items-center rounded-2xl border border-white/6 bg-white/[0.02] py-5">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <circle
+              cx="50" cy="50" r={r}
+              fill="none"
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="9"
+            />
+            <circle
+              cx="50" cy="50" r={r}
+              fill="none"
+              stroke="#7C9FC9"
+              strokeWidth="9"
+              strokeLinecap="round"
+              strokeDasharray={circ}
+              strokeDashoffset={potentialOffset}
+              transform="rotate(-90 50 50)"
+            />
+            <text
+              x="50" y="50"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill="#ffffff"
+              fontSize="22"
+              fontWeight="700"
+              fontFamily="Oswald, sans-serif">
+              {potentialScore}
+            </text>
+          </svg>
+          <p className="mt-2 text-[9px] uppercase tracking-[0.15em] text-white/30" style={{ fontFamily: "Inter, sans-serif" }}>
+            Potential Score
+          </p>
+        </div>
+      </div>
+
+      {/* Masculinity Score — large ring */}
+      <div
+        className="flex flex-col items-center rounded-2xl border border-[#880808]/15 py-6"
+        style={{ background: "linear-gradient(160deg, #1A0606 0%, #0D0303 100%)" }}>
+
+        <h3 className="mb-4 text-sm font-semibold uppercase tracking-[0.06em] text-white">
+          Masculinity Score
+        </h3>
+
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle
+            cx="70" cy="70" r={rLg}
+            fill="none"
+            stroke="rgba(255,255,255,0.06)"
+            strokeWidth="10"
+          />
+          <circle
+            cx="70" cy="70" r={rLg}
+            fill="none"
+            stroke="#E8857F"
+            strokeWidth="10"
+            strokeLinecap="round"
+            strokeDasharray={circLg}
+            strokeDashoffset={mascOffset}
+            transform="rotate(-90 70 70)"
+          />
+          <text
+            x="70" y="64"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fill="#E8857F"
+            fontSize="34"
+            fontWeight="700"
+            fontFamily="Oswald, sans-serif">
+            {masculinityScore}
+          </text>
+          <text
+            x="70" y="88"
+            textAnchor="middle"
+            dominantBaseline="central"
+            fill="rgba(255,255,255,0.3)"
+            fontSize="11"
+            fontFamily="Inter, sans-serif">
+            / 100
+          </text>
+        </svg>
+
+        <p className="mt-3 text-[10px] uppercase tracking-[0.2em] text-white/30" style={{ fontFamily: "Inter, sans-serif" }}>
+          Masculinity Score
+        </p>
+      </div>
+
+    </div>
+  );
+}
+
 export function Process() {
   return (
     <section className="bg-black px-6 py-14" style={{ fontFamily: "'Oswald', sans-serif" }}>
@@ -80,28 +248,9 @@ export function Process() {
                 {step.description}
               </p>
 
-              {/* Dashboard preview slot — only on step 03 */}
-              {step.number === "03" && (
-                <div className="mt-4 rounded-[18px] border-[1.5px] border-dashed border-[#7C9FC9]/30 bg-[#0A2C47]/[0.15] px-4 py-7 text-center">
-                  {/*
-                    Replace this placeholder block with your real dashboard screenshot:
-                    <Image src="/dashboard-preview.png" alt="Macho Meter AI dashboard preview" width={320} height={400} className="w-full rounded-xl" />
-                  */}
-                  <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-[#0A2C47]/50">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C9FC9" strokeWidth="1.8">
-                      <rect x="3" y="3" width="18" height="18" rx="2" />
-                      <circle cx="8.5" cy="8.5" r="1.5" />
-                      <path d="M21 15l-5-5L5 21" />
-                    </svg>
-                  </div>
-                  <p className="mb-1 text-[13px] font-medium text-[#7C9FC9]/85" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Dashboard preview goes here
-                  </p>
-                  <p className="text-[11px] text-white/25" style={{ fontFamily: "Inter, sans-serif" }}>
-                    Replace with real product screenshot
-                  </p>
-                </div>
-              )}
+              {/* Dashboard preview — only on step 03 */}
+              {step.number === "03" && <DashboardPreview />}
+
             </div>
           </div>
         ))}
