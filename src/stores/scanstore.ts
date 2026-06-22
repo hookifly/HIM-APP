@@ -98,9 +98,10 @@ export const useScanStore =
 
     setImages: (images) =>
       set({
-        images,
-      }),
-
+         images,
+         imageUrls: images,
+        }),
+        
     setImageUrls: (
       imageUrls
     ) =>
