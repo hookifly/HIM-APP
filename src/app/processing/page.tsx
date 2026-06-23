@@ -301,9 +301,44 @@ router.replace("/results");
       </h1>
 
       {/* Indeterminate progress bar */}
-      <div className="relative z-[2] mt-6 h-[3px] w-full max-w-[240px] overflow-hidden rounded-full bg-white/6">
-        <div className="h-full w-[35%] rounded-full bg-[#880808] animate-processing-sweep" />
-      </div>
+      {/* Animated progress bar */}
+<div className="relative z-[2] mt-6 w-full max-w-[240px]">
+  <div className="relative h-[3px] w-full overflow-hidden rounded-full bg-white/6">
+    {/* Primary sweeping bar */}
+    <div
+      className="absolute h-full rounded-full bg-[#880808]"
+      style={{ animation: "processingBar 2s ease-in-out infinite" }}
+    />
+    {/* Trailing glow */}
+    <div
+      className="absolute h-full rounded-full bg-[#E8857F]/40 blur-[2px]"
+      style={{ animation: "processingBar 2s ease-in-out infinite 0.15s" }}
+    />
+  </div>
+
+  {/* Pulsing dots below */}
+  <div className="mt-3 flex items-center justify-center gap-1.5">
+    {[0, 1, 2, 3, 4].map((i) => (
+      <div
+        key={i}
+        className="h-[3px] w-[3px] rounded-full bg-white/20"
+        style={{ animation: `processingDot 1.4s ease-in-out infinite ${i * 0.18}s` }}
+      />
+    ))}
+  </div>
+</div>
+
+<style>{`
+  @keyframes processingBar {
+    0%   { left: -45%; width: 40%; }
+    50%  { left: 30%; width: 60%; }
+    100% { left: 110%; width: 40%; }
+  }
+  @keyframes processingDot {
+    0%, 100% { opacity: 0.2; transform: scaleY(1); }
+    50%       { opacity: 1; transform: scaleY(2.5); background: #E8857F; }
+  }
+`}</style>
 
       <p className="relative z-[2] mt-6 max-w-sm text-center text-[13px] leading-relaxed text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
         {message}
