@@ -1,6 +1,7 @@
 import { initializeApp, getApps } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 import { NextResponse } from "next/server";
+import mixpanel from "@/lib/mixpanel-server";
 
 if (!getApps().length) {
   initializeApp();
@@ -46,6 +47,10 @@ export async function POST(
         .update({
           hasPurchased: true,
         });
+
+      mixpanel.track("Purchase Completed", {
+          distinct_id: uid,
+      });
 
       console.log(
         "Premium unlocked for:",

@@ -12,6 +12,7 @@ import { GlowupCard } from "@/app/recommendations/glowupcard";
 import { PriorityCard } from "@/app/recommendations/prioritycard";
 import { RecommendationCard } from "@/app/recommendations/recommendationcard";
 import { useAuth } from "@/context/auth-context";
+import mixpanel from "@/lib/mixpanel";
 
 import { jsPDF } from "jspdf";
 
@@ -31,6 +32,12 @@ export default function RecommendationsPage() {
 
 const isPremium =
   hasPurchased || isAdmin;
+
+  useEffect(() => {
+  mixpanel.track(
+    "Recommendations Viewed"
+  );
+}, []);
 
   useEffect(() => {
     if (!analysis) {

@@ -7,6 +7,7 @@ import { signin, googleSignin, handleRedirectResult } from "@/services/auth";
 import { AuthLayout } from "@/components/layout/auth-layout";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import mixpanel from "@/lib/mixpanel";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -36,6 +37,8 @@ export default function SignInPage() {
       email,
       password
     );
+
+    mixpanel.track("Sign In");
 
     if (result.user) {
       router.push("/dashboard");

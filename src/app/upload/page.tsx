@@ -21,6 +21,8 @@ import { useRouter } from "next/navigation";
 
 import { useScanStore } from "@/stores/scanstore";
 
+import mixpanel from "@/lib/mixpanel";
+
 const steps = [
   {
     key: "front",
@@ -157,6 +159,8 @@ function handleContinue() {
     files.length !== 3
   )
     return;
+
+    mixpanel.track("Scan Started");
 
   if (paywallEnabled) {
     router.push("/paywall");

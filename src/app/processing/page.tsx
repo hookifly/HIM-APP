@@ -21,6 +21,8 @@ import {
   setDoc,
 } from "firebase/firestore";
 
+import mixpanel from "@/lib/mixpanel";
+
 export default function ProcessingPage() {
   const router = useRouter();
 
@@ -184,6 +186,12 @@ const imageUrls =
         setAnalysis(
           data.analysis
         );
+
+        mixpanel.track("Analysis Completed", {
+           current_score: data.analysis.currentScore,
+           potential_score: data.analysis.potentialScore,
+           archetype: data.analysis.archetype,
+         });
 
         if (user) {
             await setDoc(

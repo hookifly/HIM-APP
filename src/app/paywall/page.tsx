@@ -12,6 +12,8 @@ import { useAuth } from "@/context/auth-context";
 
 import { useEffect, useState } from "react";
 
+import mixpanel from "@/lib/mixpanel";
+
 export default function PaywallPage() {
   const [loading, setLoading] =
   useState(false);
@@ -37,6 +39,8 @@ if (!analysis) return null;
   async function handleUnlock() {
   try {
     setLoading(true);
+
+    mixpanel.track("Checkout Started");
 
     const response = await fetch(
       "/api/create-checkout",
