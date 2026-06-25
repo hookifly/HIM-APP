@@ -150,7 +150,7 @@ useEffect(() => {
 ) : (
   <>
     <h2 className="mb-6 font-bold leading-[1.15] text-white" style={{ fontSize: "30px" }}>
-      Get Ratings and Recommendations To Become Him
+      Get Your Masculinity Rating And Improvement Plan
     </h2>
 
     <button
@@ -159,7 +159,7 @@ useEffect(() => {
       }
       className="w-full rounded-2xl bg-[#880808] py-[18px] text-sm font-semibold uppercase tracking-[0.06em] text-white"
     >
-      Begin Scan
+      Scan Your Face
     </button>
   </>
 )}
