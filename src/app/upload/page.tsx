@@ -474,8 +474,10 @@ const steps = [
 export default function UploadPageClient() {
   const router = useRouter();
 
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+  // const searchParams = useSearchParams();
+  // const error = searchParams.get("error");
+
+  const error = null;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
