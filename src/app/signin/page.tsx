@@ -76,6 +76,16 @@ export default function SignInPage() {
 
   return (
     <AuthLayout title="Welcome Back" subtitle="Continue becoming your best self.">
+
+      <Button type="button" onClick={handleGoogle} disabled={loading}
+          className="w-full bg-white text-black hover:bg-zinc-200">
+          {loading ? "Loading..." : "Sign in with Google"}
+        </Button>
+
+      <p className="pt-3 text-center text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
+        OR
+      </p>
+
       <div className="space-y-3.5">
         <Input type="email" placeholder="Email" value={email}
           onChange={(e) => setEmail(e.target.value)} />
@@ -90,11 +100,6 @@ export default function SignInPage() {
 
         <Button type="button" onClick={handleSignin} disabled={loading} className="w-full">
           {loading ? "Signing In..." : "Sign In"}
-        </Button>
-
-        <Button type="button" onClick={handleGoogle} disabled={loading}
-          className="w-full bg-white text-black hover:bg-zinc-200">
-          {loading ? "Loading..." : "Continue with Google"}
         </Button>
 
         <p className="pt-3 text-center text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>

@@ -83,7 +83,17 @@ export default function SignupPage() {
   }
 
   return (
-    <AuthLayout title="Create Account" subtitle="Start your transformation today.">
+    <AuthLayout title="Create Account" subtitle="Takes less than a minute">
+
+      <Button type="button" onClick={handleGoogle} disabled={loading}
+          className="w-full bg-white text-black hover:bg-zinc-200">
+          {loading ? "Loading..." : "Create Account with Google"}
+        </Button>
+
+      <p className="pt-3 text-center text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
+        OR
+      </p>
+
       <div className="space-y-3.5">
         <Input type="email" placeholder="Email" value={email}
           onChange={(e) => setEmail(e.target.value)} />
@@ -99,11 +109,6 @@ export default function SignupPage() {
 
         <Button onClick={handleSignup} disabled={loading} className="w-full">
           {loading ? "Creating..." : "Create Account"}
-        </Button>
-
-        <Button type="button" onClick={handleGoogle} disabled={loading}
-          className="w-full bg-white text-black hover:bg-zinc-200">
-          {loading ? "Loading..." : "Continue with Google"}
         </Button>
 
         <p className="pt-3 text-center text-sm text-white/40" style={{ fontFamily: "Inter, sans-serif" }}>
