@@ -26,7 +26,7 @@ import mixpanel from "@/lib/mixpanel";
 export default function ProcessingPage() {
   const router = useRouter();
 
-  const { user, isAdmin } =
+  const { user, setHasAnalysis } =
     useAuth();
 
   const {
@@ -209,6 +209,7 @@ const imageUrls =
       merge: true,
     }
   );
+  setHasAnalysis(true);
 }
 
 router.replace("/results");

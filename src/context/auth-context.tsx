@@ -31,6 +31,9 @@ type AuthContextType = {
   loading: boolean;
   isAdmin: boolean;
   hasAnalysis: boolean;
+  setHasAnalysis: React.Dispatch<
+    React.SetStateAction<boolean>
+  >;
   signOut: () => Promise<void>;
 };
 
@@ -40,6 +43,7 @@ const AuthContext =
     loading: true,
     isAdmin: false,
     hasAnalysis: false,
+    setHasAnalysis: () => {},
     signOut: async () => {},
   });
 
@@ -154,6 +158,7 @@ value={{
   loading,
   isAdmin,
   hasAnalysis,
+  setHasAnalysis,
   signOut,
 }}
 >
