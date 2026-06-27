@@ -13,13 +13,13 @@ export function AuthLayout({
 }: AuthLayoutProps) {
   return (
     <main
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 py-16 text-white"
-      style={{ fontFamily: "'Oswald', sans-serif" }}>
+        className="relative flex min-h-screen items-start justify-center overflow-hidden bg-black px-6 pt-10 pb-8 text-white"
+        style={{ fontFamily: "'Oswald', sans-serif" }}>
 
       <div className="relative z-[2] w-full max-w-sm">
 
         {/* Logo */}
-        <div className="mb-9 flex justify-center">
+        <div className="mb-7 flex justify-center">
           <Image
             src="/mmlogo.jpg"
             alt="Macho Meter AI"
@@ -30,7 +30,7 @@ export function AuthLayout({
         </div>
 
         {/* Heading */}
-        <div className="mb-8 text-center">
+        <div className="mb-6 text-center">
           <h2 className="font-bold leading-[1.1]" style={{ fontSize: "32px" }}>
             {title}
           </h2>

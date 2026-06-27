@@ -247,8 +247,7 @@ router.replace("/results");
   ]);
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-6 text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
-
+       <main className="relative flex h-screen flex-col items-center justify-center overflow-hidden bg-black px-6 py-6 text-white">
       {/* Ambient dual-tone moving glow */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div
@@ -262,8 +261,7 @@ router.replace("/results");
       </div>
 
       {/* Face preview */}
-      <div className="relative h-[220px] w-[220px] overflow-hidden rounded-full border border-white/10 bg-black">
-
+       <div className="relative h-[26vh] w-[26vh] max-h-[220px] max-w-[220px] min-h-[160px] min-w-[160px] overflow-hidden rounded-full border border-white/10 bg-black">
         {frontImage && (
           <Image
             src={frontImage}
@@ -288,7 +286,7 @@ router.replace("/results");
       </div>
 
       {/* Status indicator */}
-      <div className="relative z-[2] mt-8 flex items-center gap-2.5">
+      <div className="relative z-[2] mt-6 flex items-center gap-2.5">
         <div className="h-[7px] w-[7px] rounded-full bg-[#E8857F] animate-processing-pulse" />
         <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#E8857F]" style={{ fontFamily: "Inter, sans-serif" }}>
           Processing
@@ -297,7 +295,10 @@ router.replace("/results");
 
       <h1
         className="relative z-[2] mt-3.5 text-center font-bold uppercase leading-[1]"
-        style={{ fontSize: "38px", letterSpacing: "0.02em" }}>
+        style={{
+  fontSize: "clamp(30px, 5vw, 38px)",
+  letterSpacing: "0.02em",
+}}>
         Analyzing Face
       </h1>
 

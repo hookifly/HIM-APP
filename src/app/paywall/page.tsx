@@ -225,7 +225,7 @@ if (!analysis) return null;
         {/* PRICE */}
         <div className="mt-9 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/35" style={{ fontFamily: "Inter, sans-serif" }}>
-            One-time payment
+            Unlock with One-time payment
           </p>
 
           <h2 className="mt-2 font-bold" style={{ fontSize: "52px", lineHeight: "1" }}>
