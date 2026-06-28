@@ -6,6 +6,14 @@ import { ArrowLeft, Check } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
+import mixpanel from "@/lib/mixpanel";
+
+import { useEffect } from "react";
+
+useEffect(() => {
+  mixpanel.track("Instructions Viewed");
+}, []);
+
 export default function InstructionsPage() {
   const router = useRouter();
 

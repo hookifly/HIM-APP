@@ -17,6 +17,8 @@ import { useRouter } from "next/navigation";
 
 import { useScanStore } from "@/stores/scanstore";
 
+import mixpanel from "@/lib/mixpanel";
+
 const steps = [
   {
     key: "front",
@@ -67,6 +69,12 @@ export default function CameraPage() {
   useState<string | null>(null);
 
   const currentStep = steps[step];
+
+  useEffect(() => {
+  mixpanel.track("Capture Viewed", {
+    method: "camera",
+  });
+}, []);
 
   // ENABLE CAMERA
   useEffect(() => {

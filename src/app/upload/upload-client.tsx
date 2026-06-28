@@ -24,6 +24,8 @@ import { useScanStore } from "@/stores/scanstore";
 
 import { useSearchParams } from "next/navigation";
 
+import mixpanel from "@/lib/mixpanel";
+
 const steps = [
   {
     key: "front",
@@ -64,6 +66,12 @@ export default function UploadPageClient() {
   const [images, setLocalImages] = useState<string[]>([]);
 
   const currentStep = steps[step];
+
+  useEffect(() => {
+  mixpanel.track("Capture Viewed", {
+    method: "upload",
+  });
+}, []);
 
   useEffect(() => {
     clearScan();

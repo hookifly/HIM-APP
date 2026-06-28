@@ -28,6 +28,10 @@ const {
   analysis,
 } = useScanStore();
 
+useEffect(() => {
+  mixpanel.track("Paywall Viewed");
+}, []);
+
   useEffect(() => {
   if (!analysis) {
     router.replace("/results");

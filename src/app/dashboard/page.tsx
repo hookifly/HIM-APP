@@ -9,6 +9,7 @@ import { useAuth } from "@/context/auth-context";
 import { useScanStore } from "@/stores/scanstore";
 
 import Image from "next/image";
+import mixpanel from "@/lib/mixpanel";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -32,6 +33,10 @@ const [activeTab, setActiveTab] =
       ? "insights"
       : "scan"
   );
+
+useEffect(() => {
+  mixpanel.track("Dashboard Viewed");
+}, []);
 
 useEffect(() => {
   if (hasAnalysis && !isAdmin) {

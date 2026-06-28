@@ -142,6 +142,8 @@ if (!uploadData.success) {
   );
 }
 
+mixpanel.track("Analysis Started");
+
 const imageUrls =
   uploadData.imageUrls;
 

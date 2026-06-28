@@ -11,6 +11,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { useScanStore } from "@/stores/scanstore";
 import { useAuth } from "@/context/auth-context";
 import { ArrowLeft } from "lucide-react";
+import mixpanel from "@/lib/mixpanel";
 
 export default function ResultsPage() {
   const router = useRouter();
@@ -62,6 +63,10 @@ const isPremium =
 
     requestAnimationFrame(tick);
   }, [analysis, isPremium]);
+
+  useEffect(() => {
+  mixpanel.track("Results Viewed");
+}, []);
 
   useEffect(() => {
   if (!analysis) {
