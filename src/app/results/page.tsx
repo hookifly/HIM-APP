@@ -274,7 +274,7 @@ if (!analysis) return null;
         <div className="mt-6 rounded-3xl border border-white/6 p-6">
 
           <h3 className="mb-3 text-xl font-semibold">
-            AI Summary
+            Your Facial Summary
           </h3>
 
           <p className="text-sm leading-relaxed text-white/55" style={{ fontFamily: "Inter, sans-serif" }}>

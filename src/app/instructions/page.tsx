@@ -6,19 +6,14 @@ import { ArrowLeft, Check } from "lucide-react";
 
 import { useRouter } from "next/navigation";
 
-import mixpanel from "@/lib/mixpanel";
-
-import { useEffect } from "react";
-
-useEffect(() => {
-  mixpanel.track("Instructions Viewed");
-}, []);
+import InstructionsTracker from "@/components/analytics/instructions-tracker";
 
 export default function InstructionsPage() {
   const router = useRouter();
 
   return (
     <main className="min-h-screen bg-black px-4 py-6 text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
+      <InstructionsTracker />
       <div className="mx-auto max-w-sm">
         {/* Header */}
         <div className="mb-6 flex items-center gap-3.5">
